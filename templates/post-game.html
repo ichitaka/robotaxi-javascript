@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% block title%}
+Spielende
+{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+        <div class="col-12 text-center">
+            <h1 class="font-weight-light">Sie haben insgesamt {{score}} € verdient.</h1>
+            <p class="lead">Als Nächstes werden Sie ein paar Fragen zu dem bisherigen Experiment beantworten.</p>
+        <br/>
+        <a href="/survey" id="continue" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">Weiter</a>
+</div>
+
+{% endblock %}

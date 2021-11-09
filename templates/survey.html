@@ -1,0 +1,109 @@
+{% extends 'base.html' %}
+{% block title%}
+Fragen
+{% endblock %}
+
+{% block content %}
+<style>
+table {
+  font-family: arial, sans-serif;
+  border-collapse: collapse;
+}
+
+td, th {
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 8px;
+}
+
+input[type="radio"]{
+  margin: 0 10px 0 10px;
+}
+
+th{
+  text-align: center;
+}
+
+td:not(:first-child) {
+  text-align: center;
+}
+
+tr:nth-child(even) {
+  background-color: #dddddd;
+}
+
+p {
+	font-size: 20px
+}
+</style>
+<div class='p-5'>
+    <h1>Fragen</h1>
+    <p>Unten finden Sie eine Reihe von Aussagen. Bitte geben Sie an, wie weit Sie den folgenden Aussagen zustimmen bzw. nicht zustimmen:</p>
+    <form onsubmit="onSubmit(event, '/study-end')">
+        <table>
+        <tbody>
+            <tr>
+              <th>Frage</th>
+              <th>Stimme überhaupt nicht zu</th>
+              <th>Stimme nicht zu</th>
+              <th>Stimme weder zu noch lehne ab</th>
+              <th>Stimme zu</th>
+              <th>Stimme voll und ganz zu</th>
+            </tr>
+            <tr>
+              <td>Die Autos haben die Aufgabe gut erledigt.</td>
+              <td><input type="radio" id="survey1-1" name="survey1" value="1" required>1</td>
+              <td><input type="radio" id="survey1-2" name="survey1" value="2" required>2</td>
+              <td><input type="radio" id="survey1-3" name="survey1" value="3" required>3</td>
+              <td><input type="radio" id="survey1-4" name="survey1" value="4" required>4</td>
+              <td><input type="radio" id="survey1-5" name="survey1" value="5" required>5</td>
+            </tr>
+            <tr>
+              <td>Die Autos konnten die Aufgabe mit der Zeit immer besser erledigen.</td>
+              <td><input type="radio" id="survey2-1" name="survey2" value="1" required>1</td>
+              <td><input type="radio" id="survey2-2" name="survey2" value="2" required>2</td>
+              <td><input type="radio" id="survey2-3" name="survey2" value="3" required>3</td>
+              <td><input type="radio" id="survey2-4" name="survey2" value="4" required>4</td>
+              <td><input type="radio" id="survey2-5" name="survey2" value="5" required>5</td>
+            </tr>
+            <tr>
+              <td>Es hat so gewirkt, als ob die Autos wüssten, was sie tun.</td>
+              <td><input type="radio" id="survey3-1" name="survey3" value="1" required>1</td>
+              <td><input type="radio" id="survey3-2" name="survey3" value="2" required>2</td>
+              <td><input type="radio" id="survey3-3" name="survey3" value="3" required>3</td>
+              <td><input type="radio" id="survey3-4" name="survey3" value="4" required>4</td>
+              <td><input type="radio" id="survey3-5" name="survey3" value="5" required>5</td>
+            </tr>
+            <tr>
+              <td>Ich habe bereits Erfahrung mit künstlicher Intelligenz.</td>
+              <td><input type="radio" id="survey4-1" name="survey4" value="1" required>1</td>
+              <td><input type="radio" id="survey4-2" name="survey4" value="2" required>2</td>
+              <td><input type="radio" id="survey4-3" name="survey4" value="3" required>3</td>
+              <td><input type="radio" id="survey4-4" name="survey4" value="4" required>4</td>
+              <td><input type="radio" id="survey4-5" name="survey4" value="5" required>5</td>
+            </tr>
+            <tr>
+              <td>Es war unterhaltsam, die Autos zu beobachten.</td>
+              <td><input type="radio" id="survey7-1" name="survey7" value="1" required>1</td>
+              <td><input type="radio" id="survey7-2" name="survey7" value="2" required>2</td>
+              <td><input type="radio" id="survey7-3" name="survey7" value="3" required>3</td>
+              <td><input type="radio" id="survey7-4" name="survey7" value="4" required>4</td>
+              <td><input type="radio" id="survey7-5" name="survey7" value="5" required>5</td>
+            </tr>
+        </tbody>
+        </table>
+        <br/>
+        <h2>Soziodemografische Daten</h2>
+        <p>Geschlecht:
+          <input type="radio" id="survey5-1" name="survey5" value="1" required>Weiblich
+          <input type="radio" id="survey5-2" name="survey5" value="2" required>Männlich
+          <input type="radio" id="survey5-3" name="survey5" value="3" required>Divers
+        </p>
+        <br/>
+        <p>Alter:
+          <input type="text" id="survey6" name="survey6" value=""></p>
+        <br/>
+        <button type="submit" class="btn btn-primary btn-lg active" role="button" aria-pressed="true" >Weiter</button>
+    </form>
+</div>
+{% endblock %}

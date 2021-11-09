@@ -1,0 +1,82 @@
+{% extends 'base.html' %}
+{% block title%}
+Spielanleitung
+{% endblock %}
+
+{% block content %}
+<style>
+    .explanation-img {
+        width: 100px;
+        height: auto;
+    }
+</style>
+<div class='p-5'>
+    <h1>Spielanleitung</h1>
+    <p>
+        Sie haben 30 € zur Seite gelegt und wollen nun diese geschickt investieren. 
+        Sie entscheiden sich in autonome Taxis zu investieren. Diese können ohne Ihr 
+        Zutun Fahrgäste einsammeln und so Geld für Sie verdienen. Leider funktionieren 
+        diese Maschinen aber nicht immer perfekt. Deshalb müssen Sie auch für alle 
+        Schäden die aufkommen haften.
+    </p>
+    <p>
+        In diesem Spiel können Sie mehrmals in verschiedene 
+        autonome Fahrzeuge investieren. Jede Fahrt kostet Sie dabei 1 €. Ihr Ziel ist es 
+        möglichst viel Geld mit der richtigen Investition in insgesamt 30 Runden zu sammeln. 
+        <u>Sie erhalten eine Auszahlung in Höhe von <b>10%</b> Ihres finalen Kontostandes 
+        nach Abschluss dieses Experiments.</u>
+    </p>
+    <p>
+        {% if condition == 1 %}
+            Während jeder Runde schauen Sie dem Taxi zu, wie es Geld für Sie verdient. 
+            Während jeder Runde werden Sie über Ihre Webcam aufgezeichnet.
+        {% elif condition == 2 %}
+            Während jeder Runde schauen Sie dem Taxi zu, wie es Geld für Sie verdient. 
+            Dabei sollen Sie die Leistung des Taxis mit Ihren Reaktionen bewerten. 
+            <b>Reagieren Sie auf gute und negative Ereignisse mit Ihrer Mimik. </b>
+            Das Taxi wird versuchen daraus zu lernen. Während jeder Runde werden Sie über 
+            Ihre Webcam aufgezeichnet.
+        {% else %} <!-- should be condition == 3 -->
+            Während jeder Runde schauen Sie dem Taxi zu, wie es Geld für Sie verdient und 
+            Ihre Reaktionen zu der Leistung des Taxis werden für Forschungszwecke aufgezeichnet.
+        {% endif %}
+    </p>
+    <p>
+        In der ersten Runde können Sie das Taxi selbst steuern, damit Sie das Spiel verstehen.
+    </p>
+    <div class="d-flex align-items-center">
+        <div class="flex-shrink-0">
+            <img class='' src={{url_for('static', path='/cool_man.png')}}>
+        </div>
+        <div class='flex-grow-1 ms-3'>
+            Sammeln Sie einen Fahrgast ein, verdienen Sie damit 6 €.
+        </div>
+    </div>
+    <div class="d-flex align-items-center">
+        <div class="flex-shrink-0">
+            <img class='' src={{url_for('static', path='/purple_car.png')}}>
+        </div>
+        <div class='flex-grow-1 ms-3'>
+            Dieses Auto sollten Sie vermeiden! Sollte es zur Kollision kommen, müssen Sie 5 € Strafe zahlen.
+        </div>
+    </div>
+    <div 
+    <div class="d-flex align-items-center">
+        <div class="flex-shrink-0">
+            <img class='' src={{url_for('static', path='/road_block.png')}}>
+        </div>
+        <div class='flex-grow-1 ms-3'>
+            Wenn Sie diese Straßensperre beschädigen, müssen Sie eine Strafe von 1 € bezahlen.
+        </div>
+    </div>
+    <div class="d-flex align-items-center">
+        <div class="flex-shrink-0">
+            <img class='' src={{url_for('static', path='/forest.png')}}>
+        </div>
+        <div class='flex-grow-1 ms-3'>
+            Die Bäume markieren die Grenzen des Spielfeldes. Wenn Sie die Grenze erreichen, wird das Auto automatisch in eine zufällige Richtung wechseln.
+        </div>
+    </div>
+    <button type="button" onclick="location.href='/car-selection'" class="btn btn-primary btn-lg">Weiter</button>
+</div>
+{% endblock %}

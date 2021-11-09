@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+{% block title%}
+Versuchspersonen-Code
+{% endblock %}
+
+{% block content %}
+<div class="container h-100">
+    <div class="row h-100 align-items-center">
+        <div class="col-12">
+            <h1 class="font-weight-light">Versuchspersonen-Code</h1>
+            <p>Ein Versuchspersonen-Code ist eine Zeichenfolge, mit der wir Ihre Daten möglichst anonym zueinander zuordnen können.<br>
+            Er besteht aus 6 Zeichen:<br>
+            - Die ersten zwei Buchstaben des Vornamens Ihrer Mutter<br>
+            - Die ersten zwei Buchstaben des Vornamens Ihres Vaters<br>
+            - Der Tag im Monat Ihres Geburtstages</p>
+            <br/>
+            <p>Beispiel:<br>
+            - Vorname Mutter ist <b>In</b>grid<br>
+            - Vorname Vater ist <b>Mo</b>hammad<br>
+            - Sie sind am <b>32</b>. März 1987 geboren ;)<br>
+            Daraus ergibt sich der Versuchspersonen Code: <b>INMO32</b></p>
+            <div class="mb-3">
+                <form onsubmit="onSubmit(event, '/agreement')">
+                    <label for="exampleInputVPcode" class="form-label">Versuchspersonen-Code</label>
+                    <input name="subject_code" type="text" class="form-control" id="exampleInputVPcode" placeholder="Ihre Auswahl" required>
+                    </br>
+                <button type="submit" class="btn btn-primary btn-lg active" role="button" aria-pressed="true" >Weiter</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

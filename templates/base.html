@@ -1,0 +1,54 @@
+<!doctype html>
+<title>{% block title %}{% endblock %} - Experiment</title>
+<link rel="shortcut icon" type="image/jpg" href="{{url_for('static', path='/favicon.ico')}}"/>
+<script src="https://code.jquery.com/jquery-3.6.0.slim.min.js" integrity="sha256-u7e5khyithlIdTpu22PHhENmPcRdFiHRjhAuHcs05RI=" crossorigin="anonymous"></script>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+<script>
+    function onSubmit(e, goal) {
+        e.preventDefault();
+        e.stopPropagation();
+        const form = e.target;
+        const data = {};
+        for (let element of form.elements) {
+            if (element.tagName == "BUTTON") {
+                continue
+            } else if (element.type == "checkbox") {
+                data[element.name] = element.checked
+            } else if (element.type == "radio") {
+                if (element.checked) {
+                    data[element.name] = element.value
+                }
+            } else {
+                data[element.name] = element.value;
+            }
+        }
+        console.log(data);
+        fetch('/form/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)}).then(function (response) {
+                if (response.status == 200) {
+                    window.location.href = goal;
+                } else {
+                    response.json().then(function (data) {
+                        $("#alert").html(data.alert);
+                        $("#alert").show();
+                        window.scrollTo(0, 0);
+                    });
+                }
+            });
+    }
+</script>
+<nav>
+    <img src="{{url_for('static', path='/tu_darmstadt_logo.png')}}" width="17%" height="17%">
+    {% block nav %}{% endblock %}
+</nav>
+<div class="p-2">
+    <div class="alert alert-danger collapse" role="alert" id="alert">
+    </div>
+</div>
+<section class="content">
+    {% block content %}{% endblock %}
+</section>

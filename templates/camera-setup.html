@@ -1,0 +1,105 @@
+{% extends 'base.html' %}
+{% block title%}
+Kamera Einrichten
+{% endblock %}
+
+{% block content %}
+
+<div class="container h-100">
+    <div class="col-12">
+        <h1 class="font-weight-light">Kamera Einrichten</h1>
+        <p class="lead">Bitte lassen Sie den Zugriff auf die Webcam zu. Ohne den Zugriff auf Ihre Webcam können wir nicht die notwendigen Daten sammeln.</p>
+        <button class="btn btn-primary btn-lg active" onclick="get_camera()" id="camera">Zugriff Anfragen</button>
+        <br>
+        <div class="p-2"></div>
+        <p class="lead">Bitte sorgen Sie für ein ablenkungsfreies Umfeld. Stellen Sie ihr Mobilgerät beiseite und schließen Sie alle Programme (außer Ihren Browser) und anderen Websiten.</p>
+        <p class="lead">Vermeiden Sie weitere Aktivitäten, wie zum Beispiel das Essen während des Versuches.</p>
+        <p class="lead">Wenn möglich, sorgen Sie bitte für ausreichend Beleuchtung im Raum.</p>
+        <p class="lead">Entfernen Sie bitte wenn es möglich ist, alles, was Ihr Gesicht verdecken könnte. Dazu gehören zum Beispiel Haare, Brillen oder Kopfhörer (die Tonausgabe wird nicht notwendig sein). <b>Fassen Sie sich möglichst nicht ins Gesicht.</b></p>
+        <p class="lead">Sitzen Sie möglichst zentriert vor Ihrer Kamera. Versuchen Sie sich so zu positionieren, dass Ihr Gesicht sich innerhalb des Kreises befindet.</p>
+        <div id="zone-image-container">
+            <video id="webcam" autoplay width="320" height="240"></video>
+        </div>
+        <br/>
+        <p class="lead">Sind Sie bereit?</p>
+        <button id='continue-button' onclick="continue_button()" class="btn btn-primary btn-lg active" role="button" aria-pressed="true" disabled>Weiter</button>
+        <div style="height: 50px;">
+        </div>
+        <style>
+            #zone-image-container {
+                /* Cause the absolutely positioned circles to be relative to the container */
+                position: relative;
+            }
+            /* The image must have a fixed size for the size and positions of the */
+            /* circles to be consistantly correct */
+            video {
+                width: 320px;
+            }
+
+            .zone-circle {
+                position: absolute;
+                width: 90px;
+                height: 130px;
+                border-radius: 60px;
+                border: 4px solid white;
+                left: 115px; /* width of video - (width of cirlce/2) */
+            }
+            /* Custom Y position for each zone. */
+            .zone-4 {
+                top: 40px;
+            }
+            .zone-3 {
+                top: 100px;
+            }
+            .zone-2 {
+                top: 170px;
+            }
+            .zone-1 {
+                top: 240px;
+            }
+        </style>
+        <script>
+            function drawZones(zoneList) {
+                var container = document.getElementById('zone-image-container');
+                var video_frame = document.getElementById('webcam');
+                //  Remove existing circles.
+                for (var i = container.children.length - 1; i > 0; i--) {
+                    container.removeChild(container.children[i]);
+                }
+
+                //  Add circles.
+                for (var i = 0; i < zoneList.length; i++) {
+                    var zone = document.createElement('div');
+                    zone.className = 'zone-circle zone-' + zoneList[i];
+                    container.insertBefore(zone, video_frame);
+                }
+            }
+
+            drawZones([4]);
+
+            // get video dom element
+            const video = document.querySelector('video');
+
+            function get_camera() {
+                // request access to webcam
+                navigator.mediaDevices.getUserMedia({video: {'width': {'ideal': 1920}, 'height': {'ideal': 1080}}})
+                .then(stream => {
+                    video.srcObject = stream;
+                    $("#continue-button").prop("disabled", false);
+                    $('#camera').prop("disabled", true);
+                })
+                .catch(e => {
+                    $("#alert").html('Leider konnte keine Verbindung zu Ihrer Webcam hergestellt werden.');
+                    $("#alert").show();
+                    window.scrollTo(0, 0);
+                    console.log("e: ", e);
+                });
+            }
+            function continue_button() {
+                window.location.href = "/game-instructions";
+            }
+        </script>
+    </div>
+</div>
+
+{% endblock %}

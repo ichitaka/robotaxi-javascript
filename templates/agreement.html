@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+{% block title%}
+Aufklärungsbogen & Erklärung zum Datenschutz
+{% endblock %}
+
+{% block content %}
+
+<div class="container h-100">
+    <div class="row h-100 align-items-center">
+        <div class="col-12">
+            <h1 class="font-weight-light">Aufklärungsbogen & Erklärung zum Datenschutz</h1>
+            <h3 class="font-weight-light">zur Teilnahme an der wissenschaftlichen Studie <b>„Online Mensch Maschine Interaktion“</b></h3>
+            <br/>
+            <h3>Aufklärungsbogen</h3>
+            <p>Die Richtlinien der Deutschen Forschungsgemeinschaft (DFG) sehen vor, dass sich die Teilnehmer*innen an empirischen Studien explizit und nachvollziehbar einverstanden erklären, dass sie freiwillig an unserer Forschung teilnehmen.</p>
+            <p>Aus diesem Grund möchten wir Sie bitten, die nachfolgenden Erläuterungen zum Inhalt der Studie zu lesen und untenstehende Einverständniserklärung zuzustimmen, sofern Sie damit einverstanden sind.</p>
+            <p>Im Rahmen dieses Experiments wird das Zusammenarbeiten von Programm und Mensch untersucht. Die Teilnahme an dem Experiment wird voraussichtlich 20 Minuten in Anspruch nehmen. Eine Aufwandsentschädigung erhalten Sie nach Abschluss ihrer Teilnahme.</p>
+            <p>In diesem Experiment werden Sie ein Programm beobachten, was für Sie ein Spiel spielen wird. Die Höhe ihrer Aufwandsentschädigung ist abhängig davon, wie gut das Programm das Spiel spielt. Die dabei erhobenen Daten (Videoaufzeichnung, Fragebogendaten) werden zu wissenschaftlichen Zwecken ausgewertet.</p>
+            <p>Die Ergebnisse dieser Experimente sollen genutzt werden, um in Zukunft intuitive Mensch Roboter Interaktionen zu ermöglichen. Auf diese Weise kann der Einsatz dieser Technologien langfristig einem breiteren Teil der Gesellschaft ermöglicht werden.</p>
+            <p>Die Teilnehmenden an dieser Studie werden keinem Risiko ausgesetzt, das über die Risiken des alltäglichen Lebens hinausgeht.</p>
+            <p>Sie können Ihre Teilnahme an der Studie jederzeit und ohne Angabe von Gründen abbrechen ohne, dass Ihnen dadurch Nachteile entstehen. Dazu müssen Sie nur diese Seite schließen. Im Falle eines Abbruchs werden alle bis dahin erhobenen Daten gelöscht.</p>
+            <h3>Erklärung zum Datenschutz</h3>
+            <p>Die Datenverarbeitung dieser Studie geschieht nach datenschutzrechtlichen Bestimmungen der Datenschutzgrundverordnung (DSGVO) sowie des Hessischen Datenschutz- und Informationsfreiheitsgesetzes (HDSIG). Die Daten werden ausschließlich für die im Aufklärungsbogen beschriebenen Zwecke verwendet.</p>
+            <p>Im Rahmen dieser Studie werden folgende Daten erhoben: Fragebogen zum Thema Mensch Roboter Interaktion, Gesichtsaufzeichnung des Menschen.</p>
+            <p>Als personenbezogene Daten werden erhoben: Alter, Geschlecht, Gesicht, Vorerfahrung mit Robotern.</p>
+            <h3>Vertraulichkeit</h3>
+            <p>Alle im Rahmen dieser Studie erhobenen Daten sind selbstverständlich vertraulich und werden nur in anonymisierter Form genutzt. Demografische Angaben wie Alter oder Geschlecht lassen keinen eindeutigen Schluss auf Ihre Person zu. Zu keinem Zeitpunkt im Rahmen der jeweiligen Untersuchung werden wir Sie bitten, Ihren Namen oder andere eindeutige Informationen zu nennen.</p>
+            <h3>Aufbewahrung</h3>
+            <p>Die mit dieser Studie erhobenen Daten werden am Fachgebiet Intelligente Autonome Systeme an der TU Darmstadt gespeichert und nach 10 Jahren gelöscht. Die Speicherung erfolgt in einer Form, die keinen Rückschluss auf Ihre Person zulässt, das heißt die Daten werden anonymisiert oder pseudonymisiert (z.B. durch einen von Ihnen erstellten Buchstaben und Zahlen Code). Diese Einverständniserklärung wird getrennt von den anderen Versuchsmaterialien und Unterlagen aufbewahrt und nach Ablauf dieser Frist vernichtet.</p>
+            <h3>Freiwilligkeit & Rechte der Versuchspersonen</h3>
+            <p>Ihre Teilnahme an dieser Untersuchung ist freiwillig. Es steht Ihnen zu jedem Zeitpunkt dieser Studie frei, Ihre Teilnahme abzubrechen und damit diese Einwilligung zurückziehen (Widerruf), ohne dass Ihnen daraus Nachteile entstehen. Wenn Sie die Teilnahme abbrechen, werden keine Daten von Ihnen gespeichert und alle bisher vorliegenden Daten zu Ihrer Person vernichtet.</p>
+            </p>Sie haben das Recht, Auskunft über die Sie betreffenden personenbezogenen Daten zu erhalten sowie ggf. deren Berichtigung oder Löschung zu verlangen. In Streitfällen haben Sie das Recht, sich beim Hessischen Datenschutzbeauftragten zu beschweren (Adresse s.u.).</p>
+            <hr>
+            <h3>Einverständnis</h3>
+            <p>Optionen mit * sind notwendig um an diesem Versuch teilzunehmen.
+            <form onsubmit="onSubmit(event, '/camera-setup')">
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" name="agreement_1" value="" id="defaultCheck1" required>
+                    <label class="form-check-label" for="defaultCheck1">
+                        <b>* </b>Ich habe die Erläuterungen zum Experiment gelesen und bin damit einverstanden, an der dem genannten Experiment teilzunehmen.
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" name="agreement_2" value="" id="defaultCheck2" required>
+                    <label class="form-check-label" for="defaultCheck2">
+                        <b>* </b>Ich erkläre mich einverstanden, dass die im Rahmen des Experiments erhobenen Daten zu wissenschaftlichen Zwecken ausgewertet und in pseudonymisierter Form gespeichert werden. Ich bin mir darüber bewusst, dass meine Teilnahme freiwillig erfolgt und ich den Versuch jederzeit und ohne die Angabe von Gründen abbrechen kann.
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" name="agreement_3" value="" id="defaultCheck3">
+                    <label class="form-check-label" for="defaultCheck3">
+                        Ich erkläre mich damit einverstanden, dass die erhobenen Daten in Rahmen einer Veröffentlichung der zugrunde liegenden wissenschaftlichen Arbeit veröffentlicht werden können.                    </label>
+                </div>
+                <br/>
+                <button type="submit" class="btn btn-primary btn-lg active" role="button" aria-pressed="true" >Weiter</button>
+            <form>
+            <br/>
+            <hr>
+            <p>Bei Fragen, Anregungen oder Beschwerden können Sie sich gerne an den Versuchsleiter wenden:</p>
+            <p>Tümer Tosik</p>
+            <p>Email: tumer_t@hotmail.de</p>
+            <br/>
+            <p>Bei Fragen zum Datenschutz kann auch der Datenschutzbeauftragte der TU Darmstadt kontaktiert werden:</p>
+            <p>Gerhard Schmitt</p>
+            <p>Email: datenschutz@tu-darmstadt.de</p>
+            <br/>
+            <p>Kontaktadresse des Hessischen Datenschutzbeauftragten:</p>
+            <p>Email: poststelle@datenschutz.hessen.de</p>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

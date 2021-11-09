@@ -1,0 +1,102 @@
+{% extends 'base.html' %}
+{% block title%}
+Auto auswählen
+{% endblock %}
+
+{% block content %}
+<script src="https://code.jquery.com/jquery-3.6.0.slim.min.js" integrity="sha256-u7e5khyithlIdTpu22PHhENmPcRdFiHRjhAuHcs05RI=" crossorigin="anonymous"></script>
+<script>
+    var selected = false;
+
+    $(document).ready(function () {
+        $('.radio-group .radio').click(function () {
+            $('.selected .fa').removeClass('fa-check');
+            $('.radio').removeClass('selected');
+            $(this).addClass('selected');
+            $('#continue').attr("href", "/game?car=" + $(this).attr('id'));
+            selected = true;
+        });
+    });
+    function required() {
+        if(selected == false) {
+            $('#alert').html('Bitte entscheiden Sie sich für ein Fahrzeug!');
+            $('#alert').show();
+        }
+    }
+</script>
+<style>
+    .card {
+        padding: 15px;
+        margin: 10px;
+        box-shadow: 0 3px 5px 0 rgba(0, 0, 0, 0.01);
+        transition: box-shadow 0.3s ease-in-out;
+        border:1px solid #ddd;
+        cursor: pointer;
+        border-radius: 4px;
+ 	}
+
+ 	.card:hover {
+ 		box-shadow: 0 5px 15px 2px rgba(0, 0, 0, 0.3);
+ 	}
+
+    .radio {
+        display: inline-block;
+        box-sizing: border-box;
+        cursor: pointer;
+        color: #000;
+        font-weight: 500;
+    }
+
+    .radio:hover {
+        box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0.1)
+    }
+
+    .radio.selected {
+        box-shadow: 0px 8px 16px 0px #EEEEEE;
+    }
+
+    .selected {
+        background-color: #E0F2F1
+    }
+</style>
+<div class="container mt-5">
+    <div class="col-12 text-center">
+        {% if run == 0 %}
+            <h1 class="font-weight-light">Runde {{run}}: Wählen Sie ein Auto aus</h1>
+            <p class="lead">Diese Runde können Sie das Spiel selbst spielen, um sich mit der Aufgabe vertraut zu machen. Die Punkte aus dieser Runde haben keinen Einfluss auf Ihre Gesamtpunktzahl. Das Auto steuern Sie mit Ihren Pfeiltasten auf der Tastatur. Die Eingabe ist leicht verzögert.</p>
+        {% else %}
+            <h1 class="font-weight-light">Runde {{run}}: In ein Auto investieren</h1>
+            <p class="lead">Ihr aktuelles Guthaben beträgt: {{score}} €</p>
+            <p class="lead">Wählen Sie das Fahrzeug aus, welches für Sie fahren soll.</p>
+        {% endif %}
+    <br/>
+    <div class="row justify-content-between radio-group">
+        <div class="col-lg-3 col-md-6 col-xs-12 pl-1 pr-1">
+            <div class="card radio" id="auto_bus">
+                <img src="{{url_for('static', path='/auto_bus_east.png')}}" />
+            </div>
+            {% if run != 0 %}
+                <p>1 €</p>
+            {% endif %}
+        </div>
+        <div class="col-lg-3 col-md-6 col-xs-12 pl-1 pr-1">
+            <div class="card radio" id="pickup">
+                <img src="{{url_for('static', path='/pickup_east.png')}}" />
+            </div>
+            {% if run != 0 %}
+                <p>1 €</p>
+            {% endif %}
+        </div>
+        <div class="col-lg-3 col-md-6 col-xs-12 pl-1 pr-1">
+            <div class="card radio" id="truck">
+                <img src="{{url_for('static', path='/truck_east.png')}}" />
+            </div>
+            {% if run != 0 %}
+                <p>1 €</p>
+            {% endif %}
+        </div>
+    </div>
+    <a onclick="required()" id="continue" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">Weiter</a>
+</div>
+
+{% endblock %}

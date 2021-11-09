@@ -1,0 +1,84 @@
+<script>
+    document.addEventListener('keyup', (e) => {
+        console.log('PRESS');
+        var key = e.keyCode;
+
+        if ((key == LEFT_KEY)) {
+            $('#left').css('border-color', 'black');
+        }
+        else if ((key == RIGHT_KEY)) {
+            $('#right').css('border-color', 'black');
+        }
+        else if ((key == UP_KEY)) {
+            $('#up').css('border-color', 'black');
+        }
+        else if ((key == DOWN_KEY)) {
+            $('#down').css('border-color', 'black');
+        }
+    });
+
+    document.addEventListener('keydown', (e) => {
+        console.log('PRESS');
+        var key = e.keyCode;
+
+        if ((key == LEFT_KEY)) {
+            $('#left').css('border-color', 'red');
+        }
+        else if ((key == RIGHT_KEY)) {
+            $('#right').css('border-color', 'red');
+        }
+        else if ((key == UP_KEY)) {
+            $('#up').css('border-color', 'red');
+        }
+        else if ((key == DOWN_KEY)) {
+            $('#down').css('border-color', 'red');
+        }
+    });
+    $("#alert").html('Steuern Sie ihr Auto in der Testrunde mit den Pfeiltasten!');
+    $("#alert").show();
+</script>
+<style>
+    #keyboard {
+        position: absolute;
+        top: 300px;
+        left: 730px;
+        z-index: 10;
+    }
+
+    .key {
+        border: 5px solid black;
+        height: 50px;
+        width: 50px;
+        border-radius: 10px;
+        text-align: center;
+        vertical-align: middle;
+        /* Needs to be the same as div height - border*/
+        line-height: 40px;     
+    }
+</style>
+<div id="keyboard">
+    <div class="col">
+        <div class="row">
+            <div class="key" style="border: 0px;">
+                
+            </div>
+            <div class="key" id="up">
+                ↑
+            </div>
+            <div class="key" style="border: 0px;">
+                
+            </div>                
+        </div>
+        <div class="row">
+            <div class="key" id="left">
+                ←                    
+            </div>
+            <div class="key" id="down">
+                ↓
+            </div>
+            <div class="key" id="right">
+                →
+            </div>                
+        </div>
+    </div>
+</div>

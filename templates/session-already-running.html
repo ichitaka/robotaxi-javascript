@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% block title%}
+Achtung!
+{% endblock %}
+
+{% block content %}
+
+<div class="container h-100">
+    <div class="row h-100 align-items-center">
+        <div class="col-12">
+            <h2 class="font-weight-light">Das Experiment ist aktuell besetzt!</h1>
+            <p>Es kann leider nur eine Person gleichzeitig das Experiment durchführen. Bitte versuchen Sie es in ein paar Minuten noch einmal.</p>
+            <br/>
+            <a href="/subject-code" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">Neu laden</a>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

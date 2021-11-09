@@ -1,0 +1,318 @@
+{% extends 'base.html' %}
+{% block title%}
+    Spiel
+{% endblock %}
+{% block nav %}
+    Runde {{run}} / 30
+{% endblock %}
+
+{% block content %}
+<style>
+    html, body {margin: 0; height: 100%; overflow: hidden}
+
+    canvas {
+        padding-left: 0;
+        padding-right: 0;
+        margin-left: auto;
+        margin-right: auto;
+        display: block;
+    }
+    .game-window {
+        position: relative;
+    }
+
+</style>
+{% if user_plays %}
+    {% include 'keyboard.html' %}
+{% else %}
+
+{% endif %}
+<div class="game-window">
+    <canvas id="myCanvas" width="1100px" height="700px">
+    </canvas>
+</div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="https://www.WebRTC-Experiment.com/RecordRTC.js"></script>
+<script src="https://webrtc.github.io/adapter/adapter-latest.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js" integrity="sha512-q/dWJ3kcmjBLU4Qc47E4A9kTB4m3wuTY7vkFJDTZKjTs8jhyGQnaUrxa0Ytd0ssMZhbNua9hE+E7Qv1j+DyZwA==" crossorigin="anonymous"></script>
+<script>
+    let recorder;
+    var canvas = document.getElementById('myCanvas');
+    var ctx = canvas.getContext('2d');
+    ctx.scale(0.7, 0.7);
+
+    ctx.fillStyle = "gray";
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    //game variables and constants
+    var C_WIDTH, C_HEIGHT, score, cycles, max_cycles, DOT_SIZE, map_size_x, map_size_y;
+    var leftDirection = false;
+    var rightDirection = true;
+    var upDirection = false;
+    var downDirection = false;
+    var finished = false;
+    var next_transition = [1, 0];
+    var x, y;
+    const LEFT_KEY = 37;
+    const RIGHT_KEY = 39;
+    const UP_KEY = 38;
+    const DOWN_KEY = 40;
+    const DELAY = 50;
+
+    var auto_bus_north = new Image(); 
+    auto_bus_north.src = 'static/{{ car }}_north.png';
+
+    var auto_bus_west  = new Image();
+    auto_bus_west.src = 'static/{{ car }}_west.png';
+
+    var auto_bus_south = new Image();
+    auto_bus_south.src = 'static/{{ car }}_south.png';
+
+    var auto_bus_east  = new Image(); 
+    auto_bus_east.src = 'static/{{ car }}_east.png';
+
+    var forest = new Image();
+    forest.src = 'static/forest.png';
+
+    var man = new Image();
+    man.src = 'static/cool_man.png';
+
+    var dollar = new Image();
+    dollar.src = 'static/dollar.png';
+
+    var road_block = new Image();
+    road_block.src = 'static/road_block.png';
+
+    var road_block_broken = new Image();
+    road_block_broken.src = 'static/road_block_broken.png';
+
+    var purple_car = new Image();
+    purple_car.src = 'static/purple_car.png';
+
+    var broken_purple_car = new Image();
+    broken_purple_car.src = 'static/broken_purple_car.png';
+    
+    async function get_initial_values() {
+        return fetch('/init')
+        .then(function(response) {
+            socket.emit('render');
+            return response.json();
+        }).then(function (json) {
+            C_WIDTH = json.C_WIDTH;
+            C_HEIGHT = json.C_HEIGHT;
+            score = json.score;
+            cycles = json.cycles;
+            max_cycles = json.max_cycle;
+            x = json.bus.x;
+            y = json.bus.y;
+            map_size_x = json.map_size_x;
+            map_size_y = json.map_size_y;
+            DOT_SIZE = json.dot_size;
+        });
+    };
+
+    function render(json) {
+        x = json.bus[0].x;
+        y = json.bus[0].y;
+        orientation = json.bus[0].orientation;
+        finished = json.finished;
+        transition = [json.bus[0].transition[0], json.bus[0].transition[1]];
+        upDirection = json.bus[0].up;
+        leftDirection = json.bus[0].left;
+        downDirection = json.bus[0].down;
+        rightDirection = json.bus[0].right;
+        cycles = json.cycles;
+        score = json.score;
+        map = json.map;
+        accident_tracker = json.accident_tracker;
+        if (json.override) {
+            next_transition = json.next_transition
+        }
+
+        // GET the states of all the game figures
+        // Render said states accordingly
+
+        ctx.clearRect(0, 0, C_WIDTH * 2, C_HEIGHT);
+        ctx.fillStyle = "gray";
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        ctx.fillStyle = 'black';
+        ctx.textBaseline = 'middle'; 
+        ctx.textAlign = 'center'; 
+
+        //add font functionality later
+        ctx.font = 'normal bold 40px serif';
+
+        //create basic rendering of the right side of the screen
+        ctx.fillText('Einkommen', C_WIDTH + 200, C_HEIGHT / 2 + 100)
+
+        ctx.fillStyle = '#A0522D';
+        ctx.fillRect(C_WIDTH + 138, C_HEIGHT / 2 + 125, 125, 50)
+
+        ctx.fillStyle = 'black';
+        if (score < 0)
+            ctx.fillText('-€' + (-1 * score), C_WIDTH + 200, C_HEIGHT / 2 + 150)
+        else
+            ctx.fillText('€' + score, C_WIDTH + 200, C_HEIGHT / 2 + 150)
+
+        ctx.fillText('Zeit', C_WIDTH + 200, C_HEIGHT / 2 + 225)
+        ctx.font = 'normal bold 24px serif';
+        ctx.fillText(cycles + "/" + max_cycles, C_WIDTH + 200, C_HEIGHT / 2 + 260)
+
+        if (orientation == 0) {
+            ctx.drawImage(auto_bus_north, x + transition[0], y + transition[1])
+        }
+        else if (orientation == 1) {
+            ctx.drawImage(auto_bus_west,  x + transition[0], y + transition[1])
+        }
+        else if (orientation == 2) {
+            ctx.drawImage(auto_bus_south, x + transition[0], y + transition[1])
+        }
+        else if (orientation == 3) {
+            ctx.drawImage(auto_bus_east,  x + transition[0], y + transition[1])
+        }
+
+        //render the other images/obstacles over the bus
+        for (var i = 0; i < map[0].length; i++) {
+            for (var j = 0; j < map.length; j++) {
+                //check for dot first because of runtime efficency
+                if (map[i][j] != '.') {
+                    //draw whatever extra images you want
+                    if (map[i][j] == '#') {
+                        ctx.drawImage(forest, i * DOT_SIZE, j * DOT_SIZE);
+                    }
+                    else if (map[i][j] == 'P') {
+                        if (accident_tracker[i][j] <= 0) {
+                            ctx.drawImage(man, i * DOT_SIZE, j * DOT_SIZE);
+                        }
+                        else {
+                            ctx.drawImage(dollar, i * DOT_SIZE, j * DOT_SIZE);
+                        }
+                    }
+                    else if (map[i][j] == 'B') {
+                        if (accident_tracker[i][j] <= 0) {
+                            ctx.drawImage(road_block, i * DOT_SIZE, j * DOT_SIZE);
+                        }
+                        else {
+                            ctx.drawImage(road_block_broken, i * DOT_SIZE, j * DOT_SIZE);
+                        }
+                    }
+                    else if (map[i][j] == 'C') {
+                        if (accident_tracker[i][j] <= 0) {
+                            ctx.drawImage(purple_car, i * DOT_SIZE, j * DOT_SIZE);
+                        }
+                        else {
+                            ctx.drawImage(broken_purple_car, i * DOT_SIZE, j * DOT_SIZE);
+                        }
+                    }
+                }
+            }
+        }
+    }
+    var socket = io('/');
+
+    socket.on('connect', function() {
+        console.log('connected');
+    });
+
+    socket.on('render', async (message) => {
+        if(message.hasOwnProperty('end')) {
+            render_end();
+        } else {
+            render(message);
+        }
+    });    
+
+    async function send_inputs() {
+        // POST
+        return fetch('/inputs', {
+            // Specify the method
+            method: 'POST',
+                headers: {
+                'Content-Type': 'application/json'
+                },
+
+            // A JSON payload
+            body: JSON.stringify({
+            //Send the any keyboard input
+            "next_transition" : next_transition
+            })
+        }).then(function (response) {
+            return response.json();
+        }).then(function (json) {
+        });
+    }
+
+    async function render_end() {
+        //render the game when the maximum amount of steps has been done
+        ctx.clearRect(0, 0, C_WIDTH * 2, C_HEIGHT);
+        ctx.fillStyle = "gray";
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        ctx.fillStyle = 'black';
+        ctx.textBaseline = 'middle'; 
+        ctx.textAlign = 'center'; 
+        ctx.font = 'normal bold 50px serif';
+
+        //basically putting the minus sign in the right spot
+        ctx.fillText("Fertig nach " + cycles + " Schritten", C_WIDTH, 50); 
+        if (score < 0) {
+            ctx.fillText('Einkommen: -€' + (-1 * score), C_WIDTH, C_HEIGHT/2 + 45);
+        } else {
+            ctx.fillText('Einkommen: €' + score, C_WIDTH, C_HEIGHT/2 + 45);
+        }
+        ctx.fillText('Bitte warten Sie einen Moment', C_WIDTH, C_HEIGHT/2 + 200);
+        var elem = document.getElementById("keyboard");
+        if (elem != null) {
+            elem.parentNode.removeChild(elem);
+        }
+        stop();
+        fetch('/end?score=' + score).then(response => {
+                response.json().then(data => {
+                    setTimeout(
+                        (() => window.location.href = data.target), 1000
+                    );
+                }
+                )
+        });
+    }
+
+    async function init_game() {
+        await get_initial_values();
+    }
+
+    //Get keyboard input
+    //listen to the user's keyboard inputs
+    document.addEventListener('keydown', (e) => {
+        var key = e.keyCode;
+        var tempX = x / DOT_SIZE;
+        var tempY = y / DOT_SIZE;
+
+        if ((key == LEFT_KEY) && (!rightDirection) && (tempX > 1)) {
+            next_transition = [-1, 0];
+        }
+        else if ((key == RIGHT_KEY) && (!leftDirection) && (tempX < map_size_x - 2)) {
+            next_transition = [1, 0];
+        }
+        else if ((key == UP_KEY) && (!downDirection) && (tempY > 1)) {
+            next_transition = [0, -1];
+        }
+        else if ((key == DOWN_KEY) && (!upDirection) && (tempY < map_size_y - 2)) {
+            next_transition = [0, 1];
+        }
+        send_inputs();
+    });
+
+</script>
+<script src="{{ url_for('static', path='/js/client.js') }}"></script>
+<script>
+    const video = document.querySelector('video');
+    
+    async function setup() {
+        await start();
+        setTimeout(async function() {
+            await init_game();
+        }, 2000
+        );
+    }
+    setup();
+</script>
+{% endblock %}

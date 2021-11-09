@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% block title%}
+Willkommen
+{% endblock %}
+
+{% block content %}
+
+<div class="container h-100">
+    <div class="row h-100 align-items-center">
+        <div class="col-12">
+            <h2 class="font-weight-light">Willkommen zu unserem Experiment!</h1>
+            <p>
+                Bei diesem Versuch untersuchen wir die Interaktionen von Mensch und Maschine. 
+                In insgesamt ca. 20 Minuten, werden Sie ein Programm Aufgaben für sich erledigen lassen, um 
+                Geld zu verdienen. Zusätzlich werden Sie einige Fragen zu Ihren Beobachtungen beantworten. 
+                Während die Aufgaben erfüllt werden, werden Sie über Ihre Webcam aufgezeichnet. Eine 
+                Aufzeichnung über die Webcam ist für diesen Versuch erforderlich.
+            </p>
+            <p>
+                Für das Experiment ist ein Chromium Browser notwendig (Google Chrome, Brave, Microsoft Edge, Opera).
+            </p>
+            <br/>
+            <a id="continue" href="" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">Weiter</a>
+            <script>
+                var isChrome = /Chrome/.test(navigator.userAgent);
+                console.log(isChrome);
+                if (isChrome) {
+                    $('#continue').attr("href", '/subject-code');
+                } else {
+                    $('#continue').addClass('disabled');
+                }
+            </script>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
